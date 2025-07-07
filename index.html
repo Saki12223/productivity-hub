@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#4a90e2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>ProductivityHub by Saqib Kamal</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="./style.css">
+    <!-- External JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <!-- 3D Intro Animation -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-content">
+            <div class="intro-logo">
+                <div class="logo-container">
+                    <i class="fas fa-brain"></i>
+                    <div class="logo-particles"></div>
+                </div>
+                <h1>ProductivityHub</h1>
+            </div>
+            <div class="intro-text">
+                <p>Elevate Your Productivity</p>
+                <div class="creator-info">
+                    <p>Crafted by</p>
+                    <h2>Saqib Kamal</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-brain"></i>
+                <h2>ProductivityHub</h2>
+            </div>
+            
+            <div class="user-profile">
+                <div class="avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <h3 id="userName">User</h3>
+                    <p id="userStreak">0 Day Streak</p>
+                </div>
+            </div>
+
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#study" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Study Hub</span>
+                </a>
+                <a href="#wellness" class="nav-item">
+                    <i class="fas fa-heart"></i>
+                    <span>Wellness Center</span>
+                </a>
+                <a href="#productivity" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Productivity</span>
+                </a>
+                <a href="#settings" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+
+            <div class="quick-actions">
+                <button id="quickTimer" class="action-btn">
+                    <i class="fas fa-clock"></i>
+                    Quick Timer
+                </button>
+                <button id="quickNote" class="action-btn">
+                    <i class="fas fa-sticky-note"></i>
+                    Quick Note
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div id="dashboard" class="section active">
+                <header class="section-header">
+                    <h1>Welcome Back!</h1>
+                    <p class="date" id="currentDate"></p>
+                </header>
+
+                <div class="stats-grid">
+                    <div class="stat-card focus-time">
+                        <i class="fas fa-clock"></i>
+                        <div class="stat-info">
+                            <h3>Focus Time</h3>
+                            <p id="totalFocusTime">0 hrs</p>
+                        </div>
+                    </div>
+                    <div class="stat-card tasks">
+                        <i class="fas fa-tasks"></i>
+                        <div class="stat-info">
+                            <h3>Tasks Done</h3>
+                            <p id="completedTasks">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card calories">
+                        <i class="fas fa-fire"></i>
+                        <div class="stat-info">
+                            <h3>Calories</h3>
+                            <p id="caloriesBurned">0 kcal</p>
+                        </div>
+                    </div>
+                    <div class="stat-card mindfulness">
+                        <i class="fas fa-om"></i>
+                        <div class="stat-info">
+                            <h3>Mindfulness</h3>
+                            <p id="mindfulMinutes">0 min</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widgets-grid">
+                    <!-- Focus Timer Widget -->
+                    <div class="widget timer-widget">
+                        <div class="widget-header">
+                            <h3>Focus Timer</h3>
+                            <div class="timer-controls">
+                                <button id="startTimer" class="control-btn">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <button id="pauseTimer" class="control-btn" disabled>
+                                    <i class="fas fa-pause"></i>
+                                </button>
+                                <button id="resetTimer" class="control-btn">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="timer-display">
+                            <span id="timerDisplay">25:00</span>
+                            <div class="timer-modes">
+                                <button class="mode-btn active" data-time="25">Focus</button>
+                                <button class="mode-btn" data-time="5">Short Break</button>
+                                <button class="mode-btn" data-time="15">Long Break</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Task List Widget -->
+                    <div class="widget tasks-widget">
+                        <div class="widget-header">
+                            <h3>Today's Tasks</h3>
+                            <button id="addTask" class="add-btn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="task-list" id="taskList">
+                            <!-- Tasks will be added here -->
+                        </div>
+                    </div>
+
+                    <!-- Progress Chart Widget -->
+                    <div class="widget chart-widget">
+                        <div class="widget-header">
+                            <h3>Weekly Progress</h3>
+                            <div class="chart-controls">
+                                <button class="chart-type active" data-type="focus">Focus</button>
+                                <button class="chart-type" data-type="tasks">Tasks</button>
+                                <button class="chart-type" data-type="wellness">Wellness</button>
+                            </div>
+                        </div>
+                        <canvas id="progressChart"></canvas>
+                    </div>
+
+                    <!-- Quick Access Widget -->
+                    <div class="widget quick-access-widget">
+                        <div class="widget-header">
+                            <h3>Quick Access</h3>
+                        </div>
+                        <div class="quick-access-grid">
+                            <button class="quick-access-btn" data-feature="flashcards">
+                                <i class="fas fa-clone"></i>
+                                <span>Flashcards</span>
+                            </button>
+                            <button class="quick-access-btn" data-feature="notes">
+                                <i class="fas fa-sticky-note"></i>
+                                <span>Notes</span>
+                            </button>
+                            <button class="quick-access-btn" data-feature="meditation">
+                                <i class="fas fa-om"></i>
+                                <span>Meditate</span>
+                            </button>
+                            <button class="quick-access-btn" data-feature="calories">
+                                <i class="fas fa-calculator"></i>
+                                <span>Calories</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other sections will be added dynamically -->
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Flashcards Modal -->
+    <div class="modal" id="flashcardsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-clone"></i> Flashcards</h2>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="deck-controls">
+                    <button id="newDeck" class="primary-btn">
+                        <i class="fas fa-plus"></i> New Deck
+                    </button>
+                    <select id="deckSelect">
+                        <option value="">Select a Deck</option>
+                    </select>
+                </div>
+                <div class="flashcard-container">
+                    <div class="flashcard" id="currentCard">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <p id="cardFront">Start by creating a new deck!</p>
+                            </div>
+                            <div class="card-back">
+                                <p id="cardBack"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-navigation">
+                        <button id="prevCard" class="nav-btn" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span id="cardProgress">0/0</span>
+                        <button id="nextCard" class="nav-btn" disabled>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meditation Modal -->
+    <div class="modal" id="meditationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-om"></i> Meditation</h2>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="meditation-setup">
+                    <select id="meditationDuration">
+                        <option value="2">2 minutes</option>
+                        <option value="5">5 minutes</option>
+                        <option value="10">10 minutes</option>
+                        <option value="15">15 minutes</option>
+                        <option value="20">20 minutes</option>
+                    </select>
+                    <select id="meditationType">
+                        <option value="breathing">Breathing</option>
+                        <option value="body-scan">Body Scan</option>
+                        <option value="loving-kindness">Loving Kindness</option>
+                        <option value="mindfulness">Mindfulness</option>
+                    </select>
+                    <button id="startMeditation" class="primary-btn">
+                        <i class="fas fa-play"></i> Begin
+                    </button>
+                </div>
+                <div class="meditation-session" style="display: none;">
+                    <div class="meditation-circle">
+                        <span id="meditationTimer">0:00</span>
+                        <div class="breathing-guide">
+                            <div class="breath-circle"></div>
+                            <span id="breathingPhase">Breathe in...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calorie Calculator Modal -->
+    <div class="modal" id="calorieModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calculator"></i> Calorie Calculator</h2>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="calorie-calculator">
+                    <div class="calculator-inputs">
+                        <div class="input-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" min="15" max="100">
+                        </div>
+                        <div class="input-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" id="weight" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="height">Height (cm)</label>
+                            <input type="number" id="height">
+                        </div>
+                        <div class="input-group">
+                            <label for="activity">Activity Level</label>
+                            <select id="activity">
+                                <option value="1.2">Sedentary</option>
+                                <option value="1.375">Lightly Active</option>
+                                <option value="1.55">Moderately Active</option>
+                                <option value="1.725">Very Active</option>
+                                <option value="1.9">Extra Active</option>
+                            </select>
+                        </div>
+                        <button id="calculateCalories" class="primary-btn">
+                            Calculate
+                        </button>
+                    </div>
+                    <div class="calculator-results" style="display: none;">
+                        <div class="result-card">
+                            <h3>Maintenance Calories</h3>
+                            <p id="maintenanceCalories">0</p>
+                            <span>calories/day</span>
+                        </div>
+                        <div class="result-card">
+                            <h3>Weight Loss</h3>
+                            <p id="weightLossCalories">0</p>
+                            <span>calories/day</span>
+                        </div>
+                        <div class="result-card">
+                            <h3>Weight Gain</h3>
+                            <p id="weightGainCalories">0</p>
+                            <span>calories/day</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes Modal -->
+    <div class="modal" id="notesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-sticky-note"></i> Quick Notes</h2>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="notes-container">
+                    <div class="notes-sidebar">
+                        <button id="newNote" class="primary-btn">
+                            <i class="fas fa-plus"></i> New Note
+                        </button>
+                        <div class="notes-list" id="notesList">
+                            <!-- Notes will be listed here -->
+                        </div>
+                    </div>
+                    <div class="note-editor">
+                        <input type="text" id="noteTitle" placeholder="Note Title">
+                        <textarea id="noteContent" placeholder="Start typing..."></textarea>
+                        <div class="editor-tools">
+                            <button class="tool-btn" data-tool="bold">
+                                <i class="fas fa-bold"></i>
+                            </button>
+                            <button class="tool-btn" data-tool="italic">
+                                <i class="fas fa-italic"></i>
+                            </button>
+                            <button class="tool-btn" data-tool="list">
+                                <i class="fas fa-list"></i>
+                            </button>
+                            <button id="saveNote" class="primary-btn">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Local JS -->
+    <script src="./script.js"></script>
+</body>
+</html>

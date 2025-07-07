@@ -1,0 +1,13 @@
+{
+  "name": "taskboost",
+  "version": "1.0.0",
+  "description": "TaskBoost Productivity App",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve",
+    "dev": "serve -l 3000"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
